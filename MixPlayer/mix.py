@@ -123,7 +123,7 @@ def music_fa():
 
     except BaseException:
         os.system("clear")
-        print("Exit Mix")
+        print(" Mix")
 
 
 #get music en Soon
@@ -133,8 +133,12 @@ def music_en():# play muisc en
     print(url_download)
 
 #run
-if __name__ == "__main__":
+def main():
     if choise_en_or_fa == "fa":
-        music_fa()
+            music_fa()
     if choise_en_or_fa == "en":
         music_en()
+
+
+if __name__ == "__main__":
+   main()

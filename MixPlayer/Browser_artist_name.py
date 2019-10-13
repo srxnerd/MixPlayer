@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import requests
+import mix
 from bs4 import BeautifulSoup
 from inscriptis import get_text
 import sys

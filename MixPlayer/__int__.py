@@ -1,1 +1,1 @@
-from .Browser_artist_name import sina
+from Browser_artist_name import Browser_artist
