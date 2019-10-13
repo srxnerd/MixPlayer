@@ -5,3 +5,6 @@
 - This app is for Persian and English music
 - This app is not yet complete
 - New features added soon :)
+- live radio javan 
+- stream new music in radio javan 
+
