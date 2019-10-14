@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
+
+"""this programm for play onlion muisc in terminal """
 #import lib
-import click # display text  Animation
+from click import echo , style # display text  Animation
 import requests
 from bs4 import BeautifulSoup
-import sys
-import os
-import wget
+from sys import exit
+from os import  popen , system
+from wget import download
 from urlextract import URLExtract
-import json
 from urllib.request import urlopen
 from inscriptis import get_text # get text for BeautifulSoup
 import argparse # beta get argparse for python Soon
-import vlc # for play and stream music mp3 and link
+from  vlc import MediaPlayer # for play and stream music mp3 and link
 from time import sleep
 
 
@@ -32,6 +33,7 @@ parser.add_argument("fa_or_en", type=str, help=" - select music fa or en")
 parser.add_argument("name", type=str, help=" - get name artist")
 parser.add_argument("famle", type=str, help=" - get last name artist")
 parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
+parser.add_argument('-w',"--wiki" , help=" - wiki artist", action="store_true")
 args = parser.parse_args()
 
 
@@ -41,6 +43,7 @@ choise_en_or_fa = args.fa_or_en
 
 #def music irani get muisc radio javan
 def music_fa():
+    """this def for get music fa"""
     name_artist = args.name
     famle_artist = args.famle
     url = "https://www.radiojavan.com/search?query="+name_artist+"+"+famle_artist
@@ -48,7 +51,6 @@ def music_fa():
     soup = BeautifulSoup(url_req, "lxml")
     soup_name_artist = soup.find("span", class_="artist_name")
     soup_name_track = soup.find("span", class_="song_name")
-    soup_img = soup.find("img")
 
     get_txt_name = get_text(str(soup_name_artist))
     get_txt_track = get_text(str(soup_name_track))
@@ -58,7 +60,7 @@ def music_fa():
     url_ext_2 = url_download_2+get_txt_name+"-"+get_txt_track+".mp3"
     url_ext_2 = url_ext_2.replace("-&", "")
     url_ext = url_ext.replace("-&", "")
-
+    
 
     #show play list track artist
 
@@ -69,50 +71,52 @@ def music_fa():
         #checkd url steram found or not found!
         u = urlopen(url_ext_2).readline()
         if u == b'Not found':
+            if args.wiki:
+                print("not found wiki artist")
+                exit()
             if args.download:
                 print("download done!")
-                wget.download(url_ext)
-                sys.exit()
+                download(url_ext)
+                exit()
             msg_player = "Mix Player\n"
             msg = " start play music "
-            rows, columns = os.popen('stty size', 'r').read().split() # get size terminal
-            x = msg.center(int(columns))
-            y = msg_player.center(int(columns))
-            os.system("clear")
-            click.echo(click.style(y, blink=True, bold=True, fg="red"))
-            click.echo(click.style(x, blink=True, bold=True, fg="red"))
-            name  = "\n\n\nartist: "+get_txt_name
+            rows, columns = popen('stty size', 'r').read().split() # get size terminal
+            msg_x = msg.center(int(columns))
+            msg_y = msg_player.center(int(columns))
+            system("clear")
+            echo(style(msg_y, blink=True, bold=True, fg="red"))
+            echo(style(msg_x, blink=True, bold=True, fg="red"))
+            name = "\n\n\nartist: "+get_txt_name
             track = "\ntrack: "+get_txt_track
-            click.echo(click.style(name, bold=True,fg="reset",))
-            click.echo(click.style(track, bold=True,fg="reset"))
-            p_2 = vlc.MediaPlayer(url_ext)
-            p_2.play()
+            echo(style(name, bold=True,fg="reset",))
+            echo(style(track, bold=True,fg="reset"))
+            MediaPlay2 = MediaPlayer(url_ext)
+            MediaPlay2.play()
             sleep(240) # sleep for play muisc
            
 
 
         else:
+            if args.wiki:
+                print("not found wiki artist")
+                sleep(3)
+                exit()
             if args.download:
-                    wget.download(url_ext_2)
+                    download(url_ext_2)
                     print("download done!")
-                    sys.exit()
-            img_url = extractor.find_urls(str(soup_img))
-            for img in img_url:
-                global img_show
-                img_show = img
+                    exit()
             msg_player = "------------Mix Player-----------\n"
             msg = " start play music  \n\n"
-            rows, columns = os.popen('stty size', 'r').read().split()
-            x = msg.center(int(columns))
-            y = msg_player.center(int(columns))
-            os.system("clear")
-            click.echo(click.style(y, blink=True, bold=True,fg="red"))
-            click.echo(click.style(x, blink=True, bold=True,fg="red"))
+            rows, columns = popen('stty size', 'r').read().split()
+            msg_x = msg.center(int(columns))
+            msg_y = msg_player.center(int(columns))
+            system("clear")
+            echo(style(msg_y, blink=True, bold=True,fg="red"))
+            echo(style(msg_x, blink=True, bold=True,fg="red"))
             name  = "\n\n\nartist: "+get_txt_name
             track = "\ntrack: "+get_txt_track
-            # os.system("tiv -h 50 -w 50 "+ img_show)
-            click.echo(click.style(name, bold=True,fg="reset"))
-            click.echo(click.style(track, bold=True,fg="reset"))
+            echo(style(name, bold=True,fg="reset"))
+            echo(style(track, bold=True,fg="reset"))
             soup_name_track_all = soup.find_all("span", class_="song_name")
             j = 0
             for i in soup_name_track_all:
@@ -123,7 +127,7 @@ def music_fa():
                 all_tk = get_txt_track_all.center(int(columns))
                 j = j+1
                 print("\n\n",j,"-")
-                click.echo(click.style(all_tk, bold=True,fg="reset"))
+                echo(style(all_tk, bold=True,fg="reset"))
                 
 
                 #play list
@@ -136,8 +140,8 @@ def music_fa():
                 # vlc.MediaPlayer(playlist[])
 
                 
-            p = vlc.MediaPlayer(url_ext_2) # strt stream muisc
-            p.play()
+            MediaPlay = MediaPlayer(url_ext_2) # strt stream muisc
+            MediaPlay.play()
             sleep(240)
 
 
@@ -145,15 +149,17 @@ def music_fa():
 
 
     except BaseException:
-        os.system("clear")
+        system("clear")
         print("Exit Mix Player")
 
 
 #get music en Soon
 def music_en():# play muisc en
-    name_artist = str(sys.argv[2])
-    url_download = "https://online.freemusicdownloads.world/results?search="+name_artist # add name to link
-    print(url_download)
+    """this def for get music en"""
+    print("update")
+    # name_artist = str(sys.argv[2])
+    # url_download = "https://online.freemusicdownloads.world/results?search="+name_artist # add name to link
+    # print(url_download)
 
 #run
 def main():
