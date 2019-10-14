@@ -31,7 +31,7 @@ parser = argparse.ArgumentParser(description="Mix player is a program to stream 
 parser.add_argument("fa_or_en", type=str, help=" - select music fa or en")
 parser.add_argument("name", type=str, help=" - get name artist")
 parser.add_argument("famle", type=str, help=" - get last name artist")
-parser.add_argument('-d',"--download", type=str, help=" - download muisc")
+parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
 args = parser.parse_args()
 
 
@@ -69,7 +69,7 @@ def music_fa():
         #checkd url steram found or not found!
         u = urlopen(url_ext_2).readline()
         if u == b'Not found':
-            if args.download == "d":
+            if args.download:
                 wget.download(url_ext)
                 sys.exit()
             msg_player = "Mix Player\n"
@@ -91,7 +91,7 @@ def music_fa():
 
 
         else:
-            if args.download == "d":
+            if args.download:
                     wget.download(url_ext_2)
                     sys.exit()
             img_url = extractor.find_urls(str(soup_img))
