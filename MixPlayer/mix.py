@@ -70,6 +70,7 @@ def music_fa():
         u = urlopen(url_ext_2).readline()
         if u == b'Not found':
             if args.download:
+                print("download done!")
                 wget.download(url_ext)
                 sys.exit()
             msg_player = "Mix Player\n"
@@ -93,6 +94,7 @@ def music_fa():
         else:
             if args.download:
                     wget.download(url_ext_2)
+                    print("download done!")
                     sys.exit()
             img_url = extractor.find_urls(str(soup_img))
             for img in img_url:
