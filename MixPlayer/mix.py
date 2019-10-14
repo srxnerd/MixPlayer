@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 import os
+import wget
 from urlextract import URLExtract
 import json
 from urllib.request import urlopen
@@ -14,21 +15,34 @@ import argparse # beta get argparse for python Soon
 import vlc # for play and stream music mp3 and link
 from time import sleep
 
+
 #welcome to Mix this mix for play muisc stream in termianl linux
 
 
 #server download music form radio javan
-url_download = "https://host1.rj-mw1.com/media/mp3/mp3-256/"
-url_download_2 = "https://host2.rj-mw1.com/media/mp3/mp3-256/"
+url_download = "https://host1.rj-mw1.com/media/mp3/mp3-256/" # url stream
+url_download_2 = "https://host2.rj-mw1.com/media/mp3/mp3-256/" # url stream
 extractor = URLExtract()
 
+
+
+# TODO: add argument to programm optional
+parser = argparse.ArgumentParser(description="Mix player is a program to stream & download & play music")
+parser.add_argument("fa_or_en", type=str, help=" - select music fa or en")
+parser.add_argument("name", type=str, help=" - get name artist")
+parser.add_argument("famle", type=str, help=" - get last name artist")
+parser.add_argument('-d',"--download", type=str, help=" - download muisc")
+args = parser.parse_args()
+
+
+
 #choice muisc fa or en
-choise_en_or_fa = str(sys.argv[1])
+choise_en_or_fa = args.fa_or_en
 
 #def music irani get muisc radio javan
 def music_fa():
-    name_artist = str(sys.argv[2])
-    famle_artist = str(sys.argv[3])
+    name_artist = args.name
+    famle_artist = args.famle
     url = "https://www.radiojavan.com/search?query="+name_artist+"+"+famle_artist
     url_req = requests.get(url).text
     soup = BeautifulSoup(url_req, "lxml")
@@ -55,6 +69,9 @@ def music_fa():
         #checkd url steram found or not found!
         u = urlopen(url_ext_2).readline()
         if u == b'Not found':
+            if args.download == "d":
+                wget.download(url_ext)
+                sys.exit()
             msg_player = "Mix Player\n"
             msg = " start play music "
             rows, columns = os.popen('stty size', 'r').read().split() # get size terminal
@@ -70,8 +87,13 @@ def music_fa():
             p_2 = vlc.MediaPlayer(url_ext)
             p_2.play()
             sleep(240) # sleep for play muisc
+           
+
 
         else:
+            if args.download == "d":
+                    wget.download(url_ext_2)
+                    sys.exit()
             img_url = extractor.find_urls(str(soup_img))
             for img in img_url:
                 global img_show
@@ -100,7 +122,7 @@ def music_fa():
                 j = j+1
                 print("\n\n",j,"-")
                 click.echo(click.style(all_tk, bold=True,fg="reset"))
-
+                
 
                 #play list
                 # playlist_all_1 = url_ext = url_download+get_txt_name+"-"+get_txt_track_all+".mp3"
@@ -111,9 +133,8 @@ def music_fa():
                 # playlist = playlist.append(playlist_artist_2,playlist_artist)
                 # vlc.MediaPlayer(playlist[])
 
-
-
-            p = vlc.MediaPlayer(url_ext_2)
+                
+            p = vlc.MediaPlayer(url_ext_2) # strt stream muisc
             p.play()
             sleep(240)
 
@@ -123,7 +144,7 @@ def music_fa():
 
     except BaseException:
         os.system("clear")
-        print(" Mix")
+        print("Exit Mix Player")
 
 
 #get music en Soon
@@ -137,7 +158,7 @@ def main():
     if choise_en_or_fa == "fa":
             music_fa()
     if choise_en_or_fa == "en":
-        music_en()
+        print("Sorry This option is being completed!")
 
 
 if __name__ == "__main__":
