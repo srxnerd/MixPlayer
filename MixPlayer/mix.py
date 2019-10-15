@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-
-"""this programm for play onlion muisc in terminal """
+""" get muisc stream radiojavan """
+"""this programm for stream  onlion muisc in terminal """
 #import lib
 from click import echo , style # display text  Animation
 import requests
@@ -119,7 +119,8 @@ def music_fa():
             echo(style(track, bold=True,fg="reset"))
             soup_name_track_all = soup.find_all("span", class_="song_name")
             j = 0
-            for i in soup_name_track_all:
+            track_5 = soup_name_track_all[0:4]
+            for i in track_5:
                 global playlist_arti
                 global playlist_artist_2
                 get_txt_track_all = get_text(str(i))
