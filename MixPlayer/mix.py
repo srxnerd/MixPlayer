@@ -28,8 +28,8 @@ parser.add_argument("-e","--en", action="store_true", help=" - select music fa o
 parser.add_argument("--n", type=str, help=" - get name artist")
 parser.add_argument("--f", type=str, help=" - get last name artist")
 parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
-parser.add_argument('-s',"--search" , help=" - search artist", action="store_true")
-parser.add_argument("--name", type=str, help=" - artist searcher")
+parser.add_argument('-g',"--get" , help=" - get artist", action="store_true")
+parser.add_argument("--ser", type=str, help=" - artist searcher")
 args = parser.parse_args()
 
 #choice muisc fa or en
@@ -38,8 +38,8 @@ args = parser.parse_args()
 
 
 def Browser_artist():
-    """    serach name artist in radiojavan """
-    browser_artist_char = args.name
+    """    serach name artist  """
+    browser_artist_char = args.ser
     url_radio_javan = "https://www.radiojavan.com/mp3s/browse/artists/"+browser_artist_char
     url_Browsers = requests.get(url_radio_javan).text
     soup = BeautifulSoup(url_Browsers, "lxml")
@@ -82,9 +82,6 @@ def music_fa():
         #checkd url steram found or not found!
         u = urlopen(url_ext_2).readline()
         if u == b'Not found':
-            if args.wiki:
-                print("not found wiki artist")
-                exit()
             if args.download:
                 print("download done!")
                 download(url_ext)
@@ -101,6 +98,26 @@ def music_fa():
             track = "\ntrack: "+get_txt_track
             echo(style(name, bold=True,fg="reset",))
             echo(style(track, bold=True,fg="reset"))
+            soup_name_track_all = soup.find_all("span", class_="song_name")
+            j = 0
+            Music5 = " - - -  - - 5 New music - - - - - "
+            Music5 = Music5.center(int(columns))
+            echo(style(Music5, bold=True,fg="reset"))
+            track_5 = soup_name_track_all[0:5]
+            for i in track_5:
+                global playlist_arti
+                global playlist_artist_2
+                get_txt_track_all = get_text(str(i))
+                get_txt_track_all = get_txt_track_all.replace(" ", "-")
+                all_tk = get_txt_track_all.center(int(columns))
+                j = j+1
+                print("\n\n",j,"-")
+                echo(style(all_tk, bold=True,fg="reset"))
+
+
+
+
+
             MediaPlay2 = MediaPlayer(url_ext)
             MediaPlay2.play()
             sleep(240) # sleep for play muisc
@@ -108,10 +125,6 @@ def music_fa():
 
 
         else:
-            if args.wiki:
-                print("not found wiki artist")
-                sleep(3)
-                exit()
             if args.download:
                     download(url_ext_2)
                     print("download done!")
@@ -119,6 +132,7 @@ def music_fa():
             msg_player = "------------Mix Player-----------\n"
             msg = " start play music  \n\n"
             rows, columns = popen('stty size', 'r').read().split()
+            
             msg_x = msg.center(int(columns))
             msg_y = msg_player.center(int(columns))
             system("clear")
@@ -130,7 +144,10 @@ def music_fa():
             echo(style(track, bold=True,fg="reset"))
             soup_name_track_all = soup.find_all("span", class_="song_name")
             j = 0
-            track_5 = soup_name_track_all[0:4]
+            Music5 = " - - -  - - 5 New music - - - - - "
+            Music5 = Music5.center(int(columns))
+            echo(style(Music5, bold=True,fg="reset"))
+            track_5 = soup_name_track_all[0:5]
             for i in track_5:
                 global playlist_arti
                 global playlist_artist_2
@@ -179,7 +196,7 @@ def main():
         music_fa()
     if args.en:
        music_en()
-    if args.search:
+    if args.get:
         Browser_artist()
     # if choise_en_or_fa == "en":
         # print("Sorry This option is being completed!")
