@@ -19,33 +19,44 @@ from time import sleep
 
 #welcome to Mix this mix for play muisc stream in termianl linux
 
+# TODO: autocompalte for name artist
+
+# TODO: add argument to programm optional
+parser = argparse.ArgumentParser(description="Mix player is a program to stream & download & play music")
+parser.add_argument("-f","--fa", action="store_true", help=" - select music fa or en")
+parser.add_argument("-e","--en", action="store_true", help=" - select music fa or en")
+parser.add_argument("--n", type=str, help=" - get name artist")
+parser.add_argument("--f", type=str, help=" - get last name artist")
+parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
+parser.add_argument('-s',"--search" , help=" - search artist", action="store_true")
+parser.add_argument("--name", type=str, help=" - artist searcher")
+args = parser.parse_args()
+
+#choice muisc fa or en
+# choise_en_or_fa = args.fa
+
+
+
+def Browser_artist():
+    """    serach name artist in radiojavan """
+    browser_artist_char = args.name
+    url_radio_javan = "https://www.radiojavan.com/mp3s/browse/artists/"+browser_artist_char
+    url_Browsers = requests.get(url_radio_javan).text
+    soup = BeautifulSoup(url_Browsers, "lxml")
+    data_Browser = soup.find_all("span", class_="artist")
+    for item_browser in data_Browser:
+        get_txt = get_text(str(item_browser))
+        print(get_txt)
 
 #server download music form radio javan
 url_download = "https://host1.rj-mw1.com/media/mp3/mp3-256/" # url stream
 url_download_2 = "https://host2.rj-mw1.com/media/mp3/mp3-256/" # url stream
 extractor = URLExtract()
-
-
-
-# TODO: add argument to programm optional
-parser = argparse.ArgumentParser(description="Mix player is a program to stream & download & play music")
-parser.add_argument("fa_or_en", type=str, help=" - select music fa or en")
-parser.add_argument("name", type=str, help=" - get name artist")
-parser.add_argument("famle", type=str, help=" - get last name artist")
-parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
-parser.add_argument('-w',"--wiki" , help=" - wiki artist", action="store_true")
-args = parser.parse_args()
-
-
-
-#choice muisc fa or en
-choise_en_or_fa = args.fa_or_en
-
 #def music irani get muisc radio javan
 def music_fa():
     """this def for get music fa"""
-    name_artist = args.name
-    famle_artist = args.famle
+    name_artist = args.n
+    famle_artist = args.f
     url = "https://www.radiojavan.com/search?query="+name_artist+"+"+famle_artist
     url_req = requests.get(url).text
     soup = BeautifulSoup(url_req, "lxml")
@@ -164,10 +175,15 @@ def music_en():# play muisc en
 
 #run
 def main():
-    if choise_en_or_fa == "fa":
-            music_fa()
-    if choise_en_or_fa == "en":
-        print("Sorry This option is being completed!")
+    if args.fa:
+        music_fa()
+    if args.en:
+       music_en()
+    if args.search:
+        Browser_artist()
+    # if choise_en_or_fa == "en":
+        # print("Sorry This option is being completed!")
+
 
 
 if __name__ == "__main__":
