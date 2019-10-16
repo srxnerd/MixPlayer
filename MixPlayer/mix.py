@@ -23,10 +23,11 @@ from time import sleep
 
 # TODO: add argument to programm optional
 parser = argparse.ArgumentParser(description="Mix player is a program to stream & download & play music")
-parser.add_argument("-f","--fa", action="store_true", help=" - select music fa or en")
+parser.add_argument("-ir","--fa", action="store_true", help=" - select music fa or en")
 parser.add_argument("-e","--en", action="store_true", help=" - select music fa or en")
-parser.add_argument("--n", type=str, help=" - get name artist")
-parser.add_argument("--f", type=str, help=" - get last name artist")
+parser.add_argument("-n","--n", type=str, help=" - get name artist")
+parser.add_argument("-f","--f", type=str, help=" - get last name artist", default= " ")
+parser.add_argument("-t","--track", type=str, help=" - get track name artist", default= " ")
 parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
 parser.add_argument('-g',"--get" , help=" - get artist", action="store_true")
 parser.add_argument("--ser", type=str, help=" - artist searcher")
@@ -57,7 +58,8 @@ def music_fa():
     """this def for get music fa"""
     name_artist = args.n
     famle_artist = args.f
-    url = "https://www.radiojavan.com/search?query="+name_artist+"+"+famle_artist
+    track_name_artist = args.track
+    url = "https://www.radiojavan.com/search?query="+name_artist+"+"+famle_artist+"+"+track_name_artist
     url_req = requests.get(url).text
     soup = BeautifulSoup(url_req, "lxml")
     soup_name_artist = soup.find("span", class_="artist_name")
