@@ -15,7 +15,8 @@ from inscriptis import get_text # get text for BeautifulSoup
 import argparse # beta get argparse for python Soon
 from  vlc import MediaPlayer # for play and stream music mp3 and link
 from time import sleep
-
+from memory_profiler import profile
+import _thread
 
 #welcome to Mix this mix for play muisc stream in termianl linux
 
@@ -30,6 +31,7 @@ parser.add_argument("-f","--f", type=str, help=" - get last name artist", defaul
 parser.add_argument("-t","--track", type=str, help=" - get track name artist", default= " ")
 parser.add_argument('-d',"--download" , help=" - download muisc", action="store_true")
 parser.add_argument('-g',"--get" , help=" - get artist", action="store_true")
+# parser.add_argument('-p',"--playlist" , help=" - get playlist", action="store_true")
 parser.add_argument("--ser", type=str, help=" - artist searcher")
 args = parser.parse_args()
 
@@ -37,7 +39,7 @@ args = parser.parse_args()
 # choise_en_or_fa = args.fa
 
 
-
+@profile
 def Browser_artist():
     """    serach name artist  """
     browser_artist_char = args.ser
@@ -52,6 +54,9 @@ def Browser_artist():
 #server download music form radio javan
 url_download = "https://host1.rj-mw1.com/media/mp3/mp3-256/" # url stream
 url_download_2 = "https://host2.rj-mw1.com/media/mp3/mp3-256/" # url stream
+url_download_3 = "https://host1.rj-mw1.com/media/mp3/"
+
+
 extractor = URLExtract()
 #def music irani get muisc radio javan
 def music_fa():
@@ -71,6 +76,8 @@ def music_fa():
     get_txt_track = get_txt_track.replace(" ", "-")
     url_ext = url_download+get_txt_name+"-"+get_txt_track+".mp3"
     url_ext_2 = url_download_2+get_txt_name+"-"+get_txt_track+".mp3"
+    url_ext_3 = url_download_3+get_txt_name+"-"+get_txt_track+".mp3"
+    url_ext_3 = url_ext_3.replace("-&", "")
     url_ext_2 = url_ext_2.replace("-&", "")
     url_ext = url_ext.replace("-&", "")
     
@@ -115,17 +122,10 @@ def music_fa():
                 j = j+1
                 print("\n\n",j,"-")
                 echo(style(all_tk, bold=True,fg="reset"))
-
-
-
-
-
             MediaPlay2 = MediaPlayer(url_ext)
             MediaPlay2.play()
             sleep(240) # sleep for play muisc
            
-
-
         else:
             if args.download:
                     download(url_ext_2)
@@ -159,21 +159,15 @@ def music_fa():
                 j = j+1
                 print("\n\n",j,"-")
                 echo(style(all_tk, bold=True,fg="reset"))
-                
-
-                #play list
-                # playlist_all_1 = url_ext = url_download+get_txt_name+"-"+get_txt_track_all+".mp3"
-                # playlist_all = url_ext_2 = url_download_2+get_txt_name+"-"+get_txt_track_all+".mp3"
-                # playlist_artist = playlist_all
-                # playlist_artist_2 = playlist_all_1
-                # playlist = []
-                # playlist = playlist.append(playlist_artist_2,playlist_artist)
-                # vlc.MediaPlayer(playlist[])
-
-                
             MediaPlay = MediaPlayer(url_ext_2) # strt stream muisc
             MediaPlay.play()
             sleep(240)
+        
+    
+            # def PlaylistArtist():
+                # for track_in_playlist in soup_name_track_all:
+                    # playlists = get_text(str(track_in_playlist))
+                    # print(playlists)
 
 
 

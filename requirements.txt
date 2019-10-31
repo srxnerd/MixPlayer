@@ -1,0 +1,7 @@
+wget
+bs4
+urllib3
+python-vlc
+urlextract
+click
+inscriptis
