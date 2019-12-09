@@ -7,4 +7,5 @@
 - New features added soon :)
 - live radio javan 
 - stream new music in radio javan 
-![image](https://user-images.githubusercontent.com/46731929/70409221-3cf39380-1a60-11ea-8579-c77dae4e2cba.png)
+
+![image](https://user-images.githubusercontent.com/46731929/70409278-762c0380-1a60-11ea-9d5e-c04917bd1df1.png)
