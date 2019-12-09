@@ -7,7 +7,7 @@
 - New features added soon :)
 - live radio javan 
 - stream new music in radio javan 
-
+- for example `mix -ir -n shadmehr -f aghili`
 ![image](https://user-images.githubusercontent.com/46731929/70409278-762c0380-1a60-11ea-9d5e-c04917bd1df1.png)
 
 
