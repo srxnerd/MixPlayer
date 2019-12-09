@@ -9,3 +9,7 @@
 - stream new music in radio javan 
 
 ![image](https://user-images.githubusercontent.com/46731929/70409278-762c0380-1a60-11ea-9d5e-c04917bd1df1.png)
+
+
+- `git clone https://github.com/stinerd/MixPlayer.git`
+- `pip install -r requirements.txt`
