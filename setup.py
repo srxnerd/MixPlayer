@@ -3,7 +3,7 @@ setup(
     name="Mix",
     version='0.1', 
     description="Mix music",
-    author="Sti.Nerd",
+    author="srx",
     packages=["MixPlayer"]
     )
 
